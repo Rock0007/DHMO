@@ -117,7 +117,7 @@ const Login = () => {
   const navigation = useNavigation();
 
   const handleLogin = () => {
-    navigation.navigate("Home");
+    navigation.navigate("HomeDrawer");
   };
 
   return (
