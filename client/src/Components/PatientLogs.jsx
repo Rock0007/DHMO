@@ -1,9 +1,21 @@
-import { StyleSheet, View, Text } from "react-native";
+import React from "react";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
-const PatientLogs = () => {
+const PatientLogs = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>This is the Patient Logs Page</Text>
+      {/* <TouchableOpacity
+        onPress={() => navigation.toggleDrawer()}
+        style={styles.menuIcon}
+      >
+        <Text style={styles.menuIcon}>☰</Text>
+      </TouchableOpacity> */}
+      <View style={styles.contentContainer}>
+        <Text style={styles.heading}>Patient Logs Page</Text>
+        <Text style={styles.content}>
+          This is the Patient Logs Page content. Add your content here.
+        </Text>
+      </View>
     </View>
   );
 };
@@ -11,14 +23,30 @@ const PatientLogs = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  menuIcon: {
+    padding: 10,
+  },
+  contentContainer: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#f0f0f0",
   },
-  text: {
-    fontSize: 20,
+  heading: {
+    fontSize: 24,
     fontWeight: "bold",
+    marginBottom: 20,
+  },
+  content: {
+    fontSize: 18,
     color: "#555",
+  },
+  menuIcon: {
+    fontSize: 25,
+    fontWeight: "bold",
+    padding: 20,
+    maxWidth: 10,
   },
 });
 

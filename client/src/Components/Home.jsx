@@ -1,15 +1,9 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 
 const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => navigation.toggleDrawer()}
-        style={styles.menuIcon}
-      >
-        <Text>☰</Text>
-      </TouchableOpacity>
       <HomeContent />
     </View>
   );
@@ -31,7 +25,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   menuIcon: {
-    padding: 10,
+    fontSize: 25,
+    fontWeight: "bold",
+    padding: 20,
+    maxWidth: 10,
   },
   contentContainer: {
     flex: 1,
