@@ -1,21 +1,30 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Dimensions } from "react-native";
+import { MapPinIcon } from "react-native-heroicons/outline";
 
 const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <HomeContent />
-    </View>
-  );
-};
+      <View style={styles.userDetailsContainer}>
+        <View style={styles.header}>
+          <MapPinIcon size={25} color="#333" style={styles.locationIcon} />
+          <Text style={styles.locationText}>Nalagonda</Text>
+        </View>
+        <Text style={styles.staticDetail}>Employee Name: </Text>
+        <Text style={styles.userDetailText}>Rahul</Text>
 
-const HomeContent = () => {
-  return (
-    <View style={styles.contentContainer}>
-      <Text style={styles.heading}>Welcome to Home</Text>
-      <Text style={styles.content}>
-        This is your home screen. Add your content here.
-      </Text>
+        <Text style={styles.staticDetail}>ID: </Text>
+        <Text style={styles.userDetailText}>6001</Text>
+
+        <Text style={styles.staticDetail}>PHC: </Text>
+        <Text style={styles.userDetailText}>Nalagonda</Text>
+
+        <Text style={styles.staticDetail}>Subcenter: </Text>
+        <Text style={styles.userDetailText}>2</Text>
+
+        <Text style={styles.staticDetail}>Role: </Text>
+        <Text style={styles.userDetailText}>Anm1</Text>
+      </View>
     </View>
   );
 };
@@ -23,27 +32,38 @@ const HomeContent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  menuIcon: {
-    fontSize: 25,
-    fontWeight: "bold",
-    padding: 20,
-    maxWidth: 10,
-  },
-  contentContainer: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f0f0f0",
   },
-  heading: {
-    fontSize: 24,
-    fontWeight: "bold",
+  userDetailsContainer: {
+    backgroundColor: "#c2e9fb",
+    width: Dimensions.get("window").width * 0.8,
+    padding: 25,
+    borderRadius: 10,
+    elevation: 3,
     marginBottom: 20,
   },
-  content: {
+  header: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  locationIcon: {
+    marginRight: 5,
+    color: "green",
+  },
+  locationText: {
+    fontSize: 16,
+  },
+  staticDetail: {
     fontSize: 18,
-    color: "#555",
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  userDetailText: {
+    fontSize: 18,
+    marginBottom: 15,
   },
 });
 
