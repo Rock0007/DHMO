@@ -90,11 +90,7 @@ const login = async (req, res) => {
 
     res
       .status(200)
-      .cookie("token", token, {
-        httpOnly: true,
-        sameSite: "None",
-        secure: true,
-      })
+      .cookie("token", token)
       .json({ message: "Login successful" });
   } catch (error) {
     console.error(error);
@@ -102,8 +98,40 @@ const login = async (req, res) => {
   }
 };
 
+//Get Profile
+const getProfile = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const user = await SSStaffModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      mobile: user.mobile,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+//Logout
+const logout = (req, res) => {
+  res
+    .status(200)
+    .clearCookie("token", { httpOnly: true, sameSite: "None", secure: true })
+    .json({ message: "Logout successful" });
+};
+
 module.exports = {
   test,
   signup,
   login,
+  getProfile,
+  logout,
 };
