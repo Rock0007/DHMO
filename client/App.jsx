@@ -18,11 +18,7 @@ const Drawer = createDrawerNavigator();
 const HomeDrawer = () => {
   return (
     <Drawer.Navigator drawerContent={(props) => <LeftNavbar {...props} />}>
-      <Drawer.Screen
-        name="Home"
-        component={Home}
-        // screenOptions={{ headerShown: false }}
-      />
+      <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen
         name="Patient Entry"
         component={PatientEntry}
