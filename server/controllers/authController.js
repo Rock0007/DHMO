@@ -12,6 +12,14 @@ const signup = async (req, res) => {
   try {
     const { name, email, mobile, password, confirmPassword } = req.body;
 
+    const existingUser = await SSStaffModel.findOne({
+      $or: [{ mobile }, { email }],
+    });
+
+    if (existingUser) {
+      return res.status(409).json({ error: "User already exists" });
+    }
+
     if (!/^\d{10}$/.test(mobile)) {
       return res.status(400).json({
         error: "Mobile number must be 10 digits and contain only numbers.",
@@ -55,7 +63,47 @@ const signup = async (req, res) => {
   }
 };
 
+//Login
+const login = async (req, res) => {
+  try {
+    const { mobile, password } = req.body;
+
+    const user = await SSStaffModel.findOne({ mobile });
+
+    if (!user) {
+      return res
+        .status(401)
+        .json({ error: "Invalid mobile number or password" });
+    }
+
+    const passwordMatch = await comparePassword(password, user.password);
+
+    if (!passwordMatch) {
+      return res
+        .status(401)
+        .json({ error: "Invalid mobile number or password" });
+    }
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    res
+      .status(200)
+      .cookie("token", token, {
+        httpOnly: true,
+        sameSite: "None",
+        secure: true,
+      })
+      .json({ message: "Login successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   test,
   signup,
+  login,
 };

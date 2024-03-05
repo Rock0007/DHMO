@@ -32,11 +32,10 @@ const ssStaffSchema = new Schema(
         "Assistant",
         "Officer",
       ],
-      default: "staff", // Assuming default role for SS Staff is "staff"
+      default: "staff",
     },
     dateOfBirth: {
       type: Date,
-      required: true,
     },
     address: {
       street: String,
@@ -47,7 +46,6 @@ const ssStaffSchema = new Schema(
     },
     profilePicture: {
       type: String,
-      required: true,
     },
     status: {
       type: String,
