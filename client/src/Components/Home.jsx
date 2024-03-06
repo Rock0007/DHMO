@@ -1,96 +1,75 @@
-import React from "react";
-import { StyleSheet, View, Text, Dimensions } from "react-native";
+import React, { useEffect, useState } from "react";
 import {
-  MapPinIcon,
-  UserCircleIcon,
-  IdentificationIcon,
-  HomeIcon,
-  BuildingLibraryIcon,
-  ChevronDoubleRightIcon,
-} from "react-native-heroicons/outline";
+  ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
+import { useUser } from "../Contexts/userContext";
 
-const Home = ({ navigation }) => {
+const Home = () => {
+  const { user, UserProfile } = useUser();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await UserProfile();
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [user]);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.userDetailsContainer}>
-        <View style={styles.header}>
-          <MapPinIcon size={25} color="green" style={styles.icon} />
-          <Text style={styles.headerText}>Location: Nalagonda</Text>
-        </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      {loading ? (
+        <ActivityIndicator size="large" color="black" />
+      ) : (
+        user && (
+          <View style={styles.userDetailsContainer}>
+            <Text style={styles.userHeading}>User Details</Text>
 
-        <View style={styles.detailRow}>
-          <UserCircleIcon size={25} color="#333" style={styles.icon} />
-          <Text style={styles.detailTitle}>Employee Name:</Text>
-          <Text style={styles.detailText}>Rahul</Text>
-        </View>
-        <View style={styles.detailRow}>
-          <IdentificationIcon size={25} color="#333" style={styles.icon} />
-          <Text style={styles.detailTitle}>ID:</Text>
-          <Text style={styles.detailText}>6001</Text>
-        </View>
-        <View style={styles.detailRow}>
-          <BuildingLibraryIcon size={25} color="#333" style={styles.icon} />
-          <Text style={styles.detailTitle}>PHC:</Text>
-          <Text style={styles.detailText}>Nalagonda</Text>
-        </View>
-        <View style={styles.detailRow}>
-          <HomeIcon size={25} color="#333" style={styles.icon} />
-          <Text style={styles.detailTitle}>Subcenter:</Text>
-          <Text style={styles.detailText}>2</Text>
-        </View>
-        <View style={styles.detailRow}>
-          <ChevronDoubleRightIcon size={25} color="#333" style={styles.icon} />
-          <Text style={styles.detailTitle}>Role:</Text>
-          <Text style={styles.detailText}>Anm1</Text>
-        </View>
-      </View>
-    </View>
+            <Text style={styles.userData}>Full Name: {user.fullName}</Text>
+            <Text style={styles.userData}>
+              Phone Number: {user.phoneNumber}
+            </Text>
+            <Text style={styles.userData}>Aadhar ID: {user.aadharID}</Text>
+            <Text style={styles.userData}>Role: {user.role}</Text>
+            <Text style={styles.userData}>PHC Name: {user.phcName}</Text>
+            <Text style={styles.userData}>Subcenter: {user.subcenterName}</Text>
+            <Text style={styles.userData}>Gmail: {user.gmail}</Text>
+          </View>
+        )
+      )}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    flexGrow: 1,
+    paddingVertical: 20,
   },
   userDetailsContainer: {
-    backgroundColor: "#c2e9fb",
-    width: Dimensions.get("window").width * 0.8,
-    padding: 25,
     borderRadius: 10,
-    elevation: 3, // Add elevation for shadow
-    shadowColor: "#000", // Shadow color
-    shadowOffset: { width: 0, height: 10 }, // Shadow offset
-    shadowOpacity: 0.19, // Shadow opacity
-    shadowRadius: 20, // Shadow radius
-    marginBottom: 20,
+    margin: 10,
+    padding: 15,
+    backgroundColor: "lightgray",
   },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 20,
-    justifyContent: "center",
-  },
-  headerText: {
-    fontSize: 30,
-    fontWeight: "normal",
-  },
-  detailRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  icon: {
-    marginRight: 10,
-  },
-  detailTitle: {
-    fontSize: 25,
+  userHeading: {
+    fontSize: 18,
+    color: "black",
+    textAlign: "center",
+    marginBottom: 10,
     fontWeight: "bold",
-    marginRight: 5,
   },
-  detailText: {
-    fontSize: 23,
+  userData: {
+    fontSize: 16,
+    color: "black",
+    marginBottom: 5,
   },
 });
 

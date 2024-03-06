@@ -30,6 +30,26 @@ const StaffRegistration = ({ navigation }) => {
 
   const handleSubmit = async () => {
     try {
+      // Validation checks
+      if (
+        !fullName ||
+        !age ||
+        !gender ||
+        !phoneNumber ||
+        !aadharID ||
+        !role ||
+        !phcName ||
+        !phcID ||
+        !subcenterName ||
+        !subcenterID ||
+        !gmail ||
+        !password ||
+        !confirmPassword
+      ) {
+        ToastAndroid.show("All fields must be filled", ToastAndroid.SHORT);
+        return;
+      }
+
       const formData = {
         fullName,
         age,
@@ -281,6 +301,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 5,
     alignItems: "center",
+    marginRight: 10,
   },
   submitButtonText: {
     color: "#fff",

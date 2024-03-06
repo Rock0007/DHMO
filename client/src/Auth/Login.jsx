@@ -21,6 +21,11 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
+      if (!phoneNumber || !password) {
+        ToastAndroid.show("All fields must be filled", ToastAndroid.SHORT);
+        return;
+      }
+
       const response = await authApiLogin(phoneNumber, password);
       login(response);
       ToastAndroid.show("Login successful", ToastAndroid.SHORT);

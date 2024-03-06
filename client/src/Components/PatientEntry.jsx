@@ -38,14 +38,6 @@ const PatientEntry = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      {/* <View>
-        <TouchableOpacity
-          onPress={() => navigation.toggleDrawer()}
-          style={styles.menuIcon}
-        >
-          <Text style={styles.menuIcon}>☰</Text>
-        </TouchableOpacity>
-      </View> */}
       <View style={styles.contentContainer}>
         <Text style={styles.heading}>Patient Entry Form</Text>
         <View style={styles.formContainer}>

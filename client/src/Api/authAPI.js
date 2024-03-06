@@ -39,4 +39,36 @@ export const signup = async (formData) => {
   }
 };
 
+export const logout = async () => {
+  try {
+    const response = await authApi.delete("/logout");
+
+    if (response && response.data) {
+      return response.data;
+    } else {
+      throw new Error("Invalid response from the server");
+    }
+  } catch (error) {
+    console.error("Logout error:", error);
+    throw error.response?.data || "An error occurred during logout.";
+  }
+};
+
+export const getProfile = async () => {
+  try {
+    const response = await authApi.get("/profile");
+
+    if (response && response.data) {
+      return response.data;
+    } else {
+      throw new Error("Invalid response from the server");
+    }
+  } catch (error) {
+    console.error("Get profile error:", error);
+    throw (
+      error.response?.data || "An error occurred while fetching the profile."
+    );
+  }
+};
+
 export default authApi;

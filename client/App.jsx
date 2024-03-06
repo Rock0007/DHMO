@@ -1,4 +1,3 @@
-// App.jsx
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -13,6 +12,15 @@ import PatientLogs from "./src/Components/PatientLogs";
 import ViewAttendance from "./src/Components/ViewAttendance";
 import AddStaff from "./src/Components/AddStaff";
 import Logout from "./src/Auth/Logout";
+import {
+  HomeIcon,
+  UserPlusIcon,
+  CheckCircleIcon,
+  QueueListIcon,
+  EyeIcon,
+  PlusCircleIcon,
+  ArrowLeftStartOnRectangleIcon,
+} from "react-native-heroicons/outline";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -20,36 +28,98 @@ const Drawer = createDrawerNavigator();
 const HomeDrawer = () => {
   return (
     <Drawer.Navigator drawerContent={(props) => <LeftNavbar {...props} />}>
-      <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen
+        name="Home"
+        component={Home}
+        options={{
+          drawerIcon: ({ focused }) => (
+            <HomeIcon
+              name="home"
+              size={18}
+              color={focused ? "blue" : "black"}
+            />
+          ),
+        }}
+      />
       <Drawer.Screen
         name="Patient Entry"
         component={PatientEntry}
         screenOptions={{ headerShown: false }}
+        options={{
+          drawerIcon: ({ focused }) => (
+            <UserPlusIcon
+              name="home"
+              size={18}
+              color={focused ? "blue" : "black"}
+            />
+          ),
+        }}
       />
       <Drawer.Screen
         name="Patient Logs"
         component={PatientLogs}
         screenOptions={{ headerShown: false }}
+        options={{
+          drawerIcon: ({ focused }) => (
+            <QueueListIcon
+              name="home"
+              size={18}
+              color={focused ? "blue" : "black"}
+            />
+          ),
+        }}
       />
       <Drawer.Screen
         name="Mark Attendance"
         component={MarkAttendance}
         screenOptions={{ headerShown: false }}
+        options={{
+          drawerIcon: ({ focused }) => (
+            <CheckCircleIcon
+              name="home"
+              size={18}
+              color={focused ? "blue" : "black"}
+            />
+          ),
+        }}
       />
       <Drawer.Screen
         name="View Attendance"
         component={ViewAttendance}
         screenOptions={{ headerShown: false }}
+        options={{
+          drawerIcon: ({ focused }) => (
+            <EyeIcon name="home" size={18} color={focused ? "blue" : "black"} />
+          ),
+        }}
       />
       <Drawer.Screen
         name="Add Staff"
         component={AddStaff}
         screenOptions={{ headerShown: false }}
+        options={{
+          drawerIcon: ({ focused }) => (
+            <PlusCircleIcon
+              name="home"
+              size={18}
+              color={focused ? "blue" : "black"}
+            />
+          ),
+        }}
       />
       <Drawer.Screen
         name="Logout"
         component={Logout}
         screenOptions={{ headerShown: false }}
+        options={{
+          drawerIcon: ({ focused }) => (
+            <ArrowLeftStartOnRectangleIcon
+              name="home"
+              size={18}
+              color={focused ? "blue" : "black"}
+            />
+          ),
+        }}
       />
     </Drawer.Navigator>
   );

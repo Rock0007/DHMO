@@ -1,15 +1,35 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ToastAndroid,
+} from "react-native";
+import { useUser } from "../Contexts/userContext";
+import { logout as authApiLogout } from "../Api/authAPI";
 
 const Logout = ({ navigation }) => {
-  const handleLogout = () => {
-    // Implement your logout logic here
-    // For example, navigate to the login screen after logging out
-    navigation.navigate("Login");
+  const { logout } = useUser();
+
+  const showToast = (message) => {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await authApiLogout();
+      logout();
+      navigation.navigate("Login");
+    } catch (error) {
+      console.error(error);
+      showToast("Logout failed. Please try again.");
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Logout Screen</Text>
+      <Text style={styles.heading}>Logout</Text>
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>

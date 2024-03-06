@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
+import { getProfile } from "../Api/authAPI";
 
 const UserContext = createContext();
 
@@ -21,8 +22,17 @@ const UserProvider = ({ children }) => {
     }
   };
 
+  const UserProfile = async () => {
+    try {
+      const profile = await getProfile();
+      login(profile);
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  };
+
   return (
-    <UserContext.Provider value={{ user, login, logout, signup }}>
+    <UserContext.Provider value={{ user, login, logout, signup, UserProfile }}>
       {children}
     </UserContext.Provider>
   );
@@ -36,4 +46,4 @@ const useUser = () => {
   return context;
 };
 
-export { UserProvider, useUser };
+export { UserProvider, useUser, getProfile };
