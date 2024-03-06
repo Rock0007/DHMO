@@ -11,6 +11,7 @@ import MarkAttendance from "./src/Components/MarkAttendance";
 import PatientEntry from "./src/Components/PatientEntry";
 import PatientLogs from "./src/Components/PatientLogs";
 import ViewAttendance from "./src/Components/ViewAttendance";
+import AddStaff from "./src/Components/AddStaff";
 import Logout from "./src/Auth/Logout";
 
 const Stack = createStackNavigator();
@@ -38,6 +39,11 @@ const HomeDrawer = () => {
       <Drawer.Screen
         name="View Attendance"
         component={ViewAttendance}
+        screenOptions={{ headerShown: false }}
+      />
+      <Drawer.Screen
+        name="Add Staff"
+        component={AddStaff}
         screenOptions={{ headerShown: false }}
       />
       <Drawer.Screen

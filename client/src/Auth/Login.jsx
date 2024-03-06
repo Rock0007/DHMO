@@ -16,15 +16,17 @@ import { useUser } from "../Contexts/userContext";
 const Login = () => {
   const navigation = useNavigation();
   const { login } = useUser();
-  const [mobile, setMobile] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
     try {
-      const response = await authApiLogin(mobile, password);
+      const response = await authApiLogin(phoneNumber, password);
       login(response);
       ToastAndroid.show("Login successful", ToastAndroid.SHORT);
       navigation.navigate("HomeDrawer");
+      setPhoneNumber("");
+      setPassword("");
     } catch (err) {
       const errorMessage = err.error || "An error occurred during login.";
       ToastAndroid.show(errorMessage, ToastAndroid.LONG);
@@ -40,11 +42,11 @@ const Login = () => {
             <Text style={styles.formText}>Login</Text>
             <TextInput
               style={styles.input}
-              placeholder="Mobile Number"
+              placeholder="Phone Number"
               placeholderTextColor="#aaa"
               keyboardType="numeric"
-              value={mobile}
-              onChangeText={setMobile}
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
             />
             <TextInput
               style={styles.input}

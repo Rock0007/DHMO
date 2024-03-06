@@ -1,74 +1,89 @@
 const jwt = require("jsonwebtoken");
-const SSStaffModel = require("../models/SS_Staff");
+const SubCenterStaff = require("../models/scStaff");
 const { hashPassword, comparePassword } = require("../helpers/auth");
 
-//test
+// Test
 const test = async (req, res) => {
-  res.json("test is working");
+  res.json("Test is working");
 };
 
-//Signup
+// Signup
 const signup = async (req, res) => {
   try {
-    const { name, email, mobile, password, confirmPassword } = req.body;
+    const {
+      fullName,
+      age,
+      gender,
+      phoneNumber,
+      aadharID,
+      role,
+      phcName,
+      phcID,
+      subcenterName,
+      subcenterID,
+      gmail,
+      password,
+      confirmPassword,
+    } = req.body;
 
-    const existingUser = await SSStaffModel.findOne({
-      $or: [{ mobile }, { email }],
+    const mobileNumberRegex = /^\d{10}$/;
+    if (!mobileNumberRegex.test(phoneNumber)) {
+      return res.status(400).json({ error: "Invalid mobile number format" });
+    }
+
+    const aadharNumberRegex = /^\d{12}$/;
+    if (!aadharNumberRegex.test(aadharID)) {
+      return res.status(400).json({ error: "Invalid Aadhar number format" });
+    }
+
+    const gmailRegex = /^[a-zA-Z0-9_.]+@gmail\.com$/;
+    if (!gmailRegex.test(gmail)) {
+      return res.status(400).json({ error: "Invalid Gmail format" });
+    }
+
+    const existingStaff = await SubCenterStaff.findOne({
+      $or: [{ phoneNumber }, { aadharID }, { gmail }],
     });
-
-    if (existingUser) {
-      return res.status(409).json({ error: "User already exists" });
-    }
-
-    if (!/^\d{10}$/.test(mobile)) {
+    if (existingStaff) {
       return res.status(400).json({
-        error: "Mobile number must be 10 digits and contain only numbers.",
+        error: "Mobile number, Aadhar number, or Gmail is already registered",
       });
-    }
-
-    if (!email.endsWith("@gmail.com")) {
-      return res.status(400).json({ error: "Email must end with @gmail.com" });
-    }
-
-    if (
-      password.length < 6 ||
-      !/[A-Z]/.test(password) ||
-      !/[!@#$%^&*(),.?":{}|<>]/.test(password)
-    ) {
-      return res.status(400).json({
-        error:
-          "Password must be at least 6 characters long and contain at least one uppercase letter and one symbol.",
-      });
-    }
-
-    if (password !== confirmPassword) {
-      return res.status(400).json({ error: "Passwords do not match" });
     }
 
     const hashedPassword = await hashPassword(password);
+    const hashedConfirmPassword = await hashPassword(confirmPassword);
 
-    const newSSStaffUser = new SSStaffModel({
-      name,
-      email,
-      mobile,
+    const staffMember = new SubCenterStaff({
+      fullName,
+      age,
+      gender,
+      phoneNumber,
+      aadharID,
+      role,
+      phcName,
+      phcID,
+      subcenterName,
+      subcenterID,
+      gmail,
       password: hashedPassword,
+      confirmPassword: hashedConfirmPassword,
     });
 
-    await newSSStaffUser.save();
+    await staffMember.save();
 
-    res.status(201).json({ message: "User registered successfully" });
+    res.status(201).json({ message: "Staff member registered successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
-//Login
+// Login
 const login = async (req, res) => {
   try {
-    const { mobile, password } = req.body;
+    const { phoneNumber, password } = req.body;
 
-    const user = await SSStaffModel.findOne({ mobile });
+    const user = await SubCenterStaff.findOne({ phoneNumber });
 
     if (!user) {
       return res
@@ -98,11 +113,11 @@ const login = async (req, res) => {
   }
 };
 
-//Get Profile
+// Get Profile
 const getProfile = async (req, res) => {
   try {
     const { userId } = req.user;
-    const user = await SSStaffModel.findById(userId);
+    const user = await SubCenterStaff.findById(userId);
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -110,9 +125,13 @@ const getProfile = async (req, res) => {
 
     res.status(200).json({
       _id: user._id,
-      name: user.name,
-      email: user.email,
-      mobile: user.mobile,
+      fullName: user.fullName,
+      phoneNumber: user.phoneNumber,
+      aadharID: user.aadharID,
+      role: user.role,
+      phcName: user.phcName,
+      subcenterName: user.subcenterName,
+      gmail: user.gmail,
     });
   } catch (error) {
     console.error(error);
@@ -120,7 +139,7 @@ const getProfile = async (req, res) => {
   }
 };
 
-//Logout
+// Logout
 const logout = (req, res) => {
   res
     .status(200)
@@ -130,8 +149,8 @@ const logout = (req, res) => {
 
 module.exports = {
   test,
-  signup,
   login,
   getProfile,
   logout,
+  signup,
 };

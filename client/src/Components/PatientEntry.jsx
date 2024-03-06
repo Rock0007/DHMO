@@ -95,7 +95,7 @@ const PatientEntry = ({ navigation }) => {
           </View>
           <TextInput
             style={styles.input}
-            placeholder="+91 Phone Number"
+            placeholder="Enter +91 Phone Number"
             value={phoneNumber}
             onChangeText={(text) => {
               const sanitizedText = text.replace(/[^0-9]/g, "");
@@ -111,25 +111,31 @@ const PatientEntry = ({ navigation }) => {
             style={styles.textArea}
             multiline={true}
             numberOfLines={4}
+            placeholder="Enter Diagnosis Details"
             value={diagnosis}
             onChangeText={(text) => setDiagnosis(text)}
           />
+
           <Text style={styles.sectionHeading}>Treatment</Text>
           <TextInput
             style={styles.textArea}
             multiline={true}
             numberOfLines={4}
+            placeholder="Enter Treatment Details"
             value={treatment}
             onChangeText={(text) => setTreatment(text)}
           />
+
           <Text style={styles.sectionHeading}>Other Information</Text>
           <TextInput
             style={styles.textArea}
             multiline={true}
             numberOfLines={4}
+            placeholder="Enter Other Information"
             value={otherInfo}
             onChangeText={(text) => setOtherInfo(text)}
           />
+
           <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
             <Text style={styles.submitButtonText}>Submit</Text>
           </TouchableOpacity>

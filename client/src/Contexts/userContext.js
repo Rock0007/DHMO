@@ -10,12 +10,19 @@ const UserProvider = ({ children }) => {
   };
 
   const logout = () => {
-    // Implement logout logic if needed
     setUser(null);
   };
 
+  const signup = async (formData) => {
+    try {
+      await signup(formData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ user, login, logout, signup }}>
       {children}
     </UserContext.Provider>
   );

@@ -10,7 +10,6 @@ const {
   logout,
 } = require("../controllers/authController");
 
-// Update the origin based on your frontend URL
 router.use(
   cors({
     credentials: true,
@@ -19,9 +18,9 @@ router.use(
 );
 
 router.get("/", test);
-router.post("/signup", signup);
 router.post("/login", login);
 router.get("/profile", authenticateToken, getProfile);
+router.post("/signup", signup);
 router.delete("/logout", authenticateToken, logout);
 
 module.exports = router;
