@@ -3,6 +3,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
+import { UserProvider } from "./src/Contexts/userContext";
 import Login from "./src/Auth/Login";
 import Home from "./src/Components/Home";
 import LeftNavbar from "./src/Components/LeftNavbar";
@@ -50,12 +51,14 @@ const HomeDrawer = () => {
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login" headerMode="none">
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="HomeDrawer" component={HomeDrawer} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <UserProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Login" headerMode="none">
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="HomeDrawer" component={HomeDrawer} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserProvider>
   );
 };
 

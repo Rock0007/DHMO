@@ -1,18 +1,34 @@
+// Login.jsx
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
   Text,
   TextInput,
   TouchableOpacity,
+  ToastAndroid,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Header from "../Components/Header";
+import { login as authApiLogin } from "../Api/authAPI";
+import { useUser } from "../Contexts/userContext";
 
 const Login = () => {
   const navigation = useNavigation();
+  const { login } = useUser();
+  const [mobile, setMobile] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    navigation.navigate("HomeDrawer");
+  const handleLogin = async () => {
+    try {
+      const response = await authApiLogin(mobile, password);
+      login(response);
+      ToastAndroid.show("Login successful", ToastAndroid.SHORT);
+      navigation.navigate("HomeDrawer");
+    } catch (err) {
+      const errorMessage = err.error || "An error occurred during login.";
+      ToastAndroid.show(errorMessage, ToastAndroid.LONG);
+    }
   };
 
   return (
@@ -24,14 +40,19 @@ const Login = () => {
             <Text style={styles.formText}>Login</Text>
             <TextInput
               style={styles.input}
-              placeholder="User ID"
+              placeholder="Mobile Number"
               placeholderTextColor="#aaa"
+              keyboardType="numeric"
+              value={mobile}
+              onChangeText={setMobile}
             />
             <TextInput
               style={styles.input}
               placeholder="Password"
               placeholderTextColor="#aaa"
               secureTextEntry
+              value={password}
+              onChangeText={setPassword}
             />
             <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
               <Text style={styles.submitButtonText}>Submit</Text>
@@ -97,6 +118,9 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: "white",
     fontSize: 16,
+  },
+  toastMessage: {
+    marginBottom: 16,
   },
 });
 
