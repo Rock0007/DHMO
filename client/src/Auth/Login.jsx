@@ -1,4 +1,3 @@
-// Login.jsx
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -7,11 +6,13 @@ import {
   TextInput,
   TouchableOpacity,
   ToastAndroid,
+  SafeAreaView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Header from "../Components/Header";
 import { login as authApiLogin } from "../Api/authAPI";
 import { useUser } from "../Contexts/userContext";
+import { ArrowRightIcon, LockClosedIcon } from "react-native-heroicons/outline";
 
 const Login = () => {
   const navigation = useNavigation();
@@ -39,12 +40,13 @@ const Login = () => {
   };
 
   return (
-    <>
+    <SafeAreaView style={styles.container}>
       <Header />
-      <View style={styles.container}>
-        <View style={styles.formContainer}>
-          <View style={styles.form}>
-            <Text style={styles.formText}>Login</Text>
+      <View style={styles.formContainer}>
+        <View style={styles.form}>
+          <Text style={styles.formText}>Login</Text>
+          <View style={styles.iconInputContainer}>
+            <ArrowRightIcon name="home" size={18} style={styles.icon} />
             <TextInput
               style={styles.input}
               placeholder="Phone Number"
@@ -53,6 +55,9 @@ const Login = () => {
               value={phoneNumber}
               onChangeText={setPhoneNumber}
             />
+          </View>
+          <View style={styles.iconInputContainer}>
+            <LockClosedIcon name="home" size={18} style={styles.icon} />
             <TextInput
               style={styles.input}
               placeholder="Password"
@@ -61,27 +66,27 @@ const Login = () => {
               value={password}
               onChangeText={setPassword}
             />
-            <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
-              <Text style={styles.submitButtonText}>Submit</Text>
-            </TouchableOpacity>
           </View>
+          <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
+            <Text style={styles.submitButtonText}>Submit</Text>
+          </TouchableOpacity>
         </View>
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 32,
     flex: 1,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#f0f0f0",
   },
   formContainer: {
-    width: "80%",
-    alignItems: "center",
+    flex: 1,
+    justifyContent: "center",
+    width: "85%",
+    alignSelf: "center",
   },
   form: {
     width: "100%",
@@ -103,28 +108,40 @@ const styles = StyleSheet.create({
   formText: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 25,
+    marginBottom: 20, // Decreased margin
     color: "#555",
+  },
+  iconInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 15, // Decreased margin
+    width: "100%", // Adjusted width
+  },
+  icon: {
+    color: "black",
+    marginRight: 10, // Added margin
   },
   input: {
     height: 40,
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 5,
-    marginBottom: 25,
     paddingLeft: 10,
-    width: "80%",
+    flex: 1,
   },
   submitButton: {
     backgroundColor: "#007bff",
     padding: 10,
     borderRadius: 5,
-    width: "80%",
+    width: "90%",
     alignItems: "center",
+    marginTop: 5,
+    marginLeft: 24,
   },
   submitButtonText: {
     color: "white",
     fontSize: 16,
+    fontWeight: "bold",
   },
   toastMessage: {
     marginBottom: 16,

@@ -1,6 +1,7 @@
 import axios from "axios";
+import { BASE_URL } from "@env";
 
-const baseURL = "http://10.106.24.163:8000";
+const baseURL = `${BASE_URL}`;
 
 const authApi = axios.create({
   baseURL,
@@ -68,6 +69,33 @@ export const getProfile = async () => {
     throw (
       error.response?.data || "An error occurred while fetching the profile."
     );
+  }
+};
+
+export const editProfile = async (formData) => {
+  try {
+    const response = await authApi.put("staff/edit", formData);
+
+    if (response && response.data) {
+      return response.data;
+    } else {
+      throw new Error("Invalid response from the server");
+    }
+  } catch (error) {
+    console.error("Edit Profile error:", error);
+    throw error.response?.data || "An error occurred during profile update.";
+  }
+};
+
+export const checkExistingRecord = async (field, value) => {
+  try {
+    const response = await authApi.get(
+      `/checkexistingrecord/${field}/${value}`
+    );
+    return response.data.exists;
+  } catch (error) {
+    console.error("Check Existing Record Error:", error);
+    throw error.response?.data || "An error occurred during uniqueness check.";
   }
 };
 

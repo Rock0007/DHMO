@@ -1,31 +1,33 @@
-// Header.js
 import React from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image, SafeAreaView } from "react-native";
 
 const Header = () => {
   return (
-    <View style={styles.header}>
-      <Image style={styles.logoLeft} source={require("../Assets/Cm.png")} />
-      <View style={styles.headerCenter}>
-        <Text style={styles.headerText}>Health Care</Text>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.header}>
+        <Image style={styles.logoLeft} source={require("../Assets/Cm.png")} />
+        <View style={styles.headerCenter}>
+          <Text style={styles.headerText}>Health Care</Text>
+        </View>
+        <Image
+          style={styles.logoRight}
+          source={require("../Assets/TsEmblem.png")}
+        />
       </View>
-      <Image
-        style={styles.logoRight}
-        source={require("../Assets/TsEmblem.png")}
-      />
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    backgroundColor: "#007bff",
+  },
   header: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
     padding: 17,
-    marginTop: 0,
-    backgroundColor: "#007bff",
   },
   headerCenter: {
     flex: 1,

@@ -28,9 +28,24 @@ const StaffRegistration = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const resetFormFields = () => {
+    setFullName("");
+    setAge("");
+    setGender("");
+    setPhoneNumber("");
+    setAadharID("");
+    setRole("");
+    setPHCName("");
+    setPHCID("");
+    setSubcenterName("");
+    setSubcenterID("");
+    setGmail("");
+    setPassword("");
+    setConfirmPassword("");
+  };
+
   const handleSubmit = async () => {
     try {
-      // Validation checks
       if (
         !fullName ||
         !age ||
@@ -47,6 +62,53 @@ const StaffRegistration = ({ navigation }) => {
         !confirmPassword
       ) {
         ToastAndroid.show("All fields must be filled", ToastAndroid.SHORT);
+        return;
+      }
+
+      const gmailRegex = /^[a-zA-Z0-9_.]+@gmail\.com$/i;
+      if (!gmailRegex.test(gmail)) {
+        ToastAndroid.show("Invalid Gmail format", ToastAndroid.SHORT);
+        return;
+      }
+
+      const mobileNumberRegex = /^\d{10}$/;
+      if (!mobileNumberRegex.test(phoneNumber)) {
+        ToastAndroid.show("Invalid mobile number format", ToastAndroid.SHORT);
+        return;
+      }
+
+      const aadharNumberRegex = /^\d{12}$/;
+      if (!aadharNumberRegex.test(aadharID)) {
+        ToastAndroid.show("Invalid Aadhar number format", ToastAndroid.SHORT);
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        ToastAndroid.show(
+          "Password and Confirm Password do not match",
+          ToastAndroid.SHORT
+        );
+        return;
+      }
+
+      const mobileNumberExists = await checkExistingRecord(
+        "mobileNumber",
+        phoneNumber
+      );
+      if (mobileNumberExists) {
+        ToastAndroid.show("Mobile number already exists", ToastAndroid.SHORT);
+        return;
+      }
+
+      const aadharIDExists = await checkExistingRecord("aadharID", aadharID);
+      if (aadharIDExists) {
+        ToastAndroid.show("Aadhar ID already exists", ToastAndroid.SHORT);
+        return;
+      }
+
+      const gmailExists = await checkExistingRecord("gmail", gmail);
+      if (gmailExists) {
+        ToastAndroid.show("Gmail already exists", ToastAndroid.SHORT);
         return;
       }
 
@@ -71,6 +133,9 @@ const StaffRegistration = ({ navigation }) => {
         "Staff member registered successfully",
         ToastAndroid.SHORT
       );
+
+      resetFormFields();
+
       navigation.navigate("Home");
     } catch (error) {
       console.error(error);
@@ -84,8 +149,8 @@ const StaffRegistration = ({ navigation }) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.contentContainer}>
-        <Text style={styles.heading}>Staff Registration</Text>
         <View style={styles.formContainer}>
+          <Text style={styles.heading}>Staff Registration</Text>
           <TextInput
             style={styles.input}
             placeholder="Enter Full Name"
@@ -115,7 +180,7 @@ const StaffRegistration = ({ navigation }) => {
           <View style={styles.formRow}>
             <TextInput
               style={styles.inlineInput}
-              placeholder="Enter +91 Phone Number"
+              placeholder="+91 Phone Number"
               value={phoneNumber}
               onChangeText={(text) => {
                 const sanitizedText = text.replace(/[^0-9]/g, "");
@@ -127,7 +192,7 @@ const StaffRegistration = ({ navigation }) => {
             />
             <TextInput
               style={styles.inlineInput}
-              placeholder="Enter Aadhar ID"
+              placeholder="Aadhar ID"
               value={aadharID}
               onChangeText={(text) => setAadharID(text)}
               keyboardType="numeric"
@@ -135,7 +200,7 @@ const StaffRegistration = ({ navigation }) => {
             />
           </View>
 
-          <View style={styles.formRow}>
+          <View style={styles.SelectRow}>
             <Picker
               style={styles.picker}
               selectedValue={role}
@@ -217,35 +282,32 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  menuIcon: {
-    fontSize: 25,
-    fontWeight: "bold",
-    padding: 20,
-    maxWidth: 10,
-  },
   contentContainer: {
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: "#f0f0f0",
     marginBottom: 30,
-    marginTop: 30,
+    marginTop: 50,
   },
   heading: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
     textAlign: "center",
   },
   formContainer: {
-    width: "80%",
-    paddingVertical: 10,
-  },
-  formRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 15,
-    alignItems: "center",
+    width: "90%",
+    padding: 30,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   nameInput: {
     flex: 1,
@@ -262,56 +324,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginRight: 10,
     padding: 10,
-  },
-  genderPickerContainer: {
-    flex: 1,
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginRight: 10,
-    padding: 10,
-  },
-
-  checkboxPhoneNumberContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 15,
-  },
-  checkboxLabel: {
-    marginLeft: 8,
-    fontSize: 16,
-  },
-
-  sectionHeading: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  textArea: {
-    height: 100,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 15,
-    padding: 10,
-    textAlignVertical: "top",
-  },
-
-  submitButton: {
-    backgroundColor: "#007bff",
-    padding: 15,
-    borderRadius: 5,
-    alignItems: "center",
-    marginRight: 10,
-  },
-  submitButtonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  checkboxPhoneNumberContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 15,
   },
   formRow: {
     flexDirection: "row",
@@ -333,6 +345,26 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderWidth: 1,
     marginRight: 10,
+  },
+  SelectRow: {
+    flexDirection: "row",
+    marginBottom: 15,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "gray",
+    marginRight: 10,
+  },
+  submitButton: {
+    backgroundColor: "#007bff",
+    padding: 15,
+    borderRadius: 5,
+    alignItems: "center",
+    marginRight: 10,
+  },
+  submitButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 

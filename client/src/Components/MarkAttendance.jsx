@@ -4,12 +4,6 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 const MarkAttendance = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      {/* <TouchableOpacity
-        onPress={() => navigation.toggleDrawer()}
-        style={styles.menuIcon}
-      >
-        <Text style={styles.menuIcon}>☰</Text>
-      </TouchableOpacity> */}
       <View style={styles.contentContainer}>
         <Text style={styles.heading}>Mark Attendance Page</Text>
         <Text style={styles.content}>

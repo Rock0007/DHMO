@@ -39,8 +39,8 @@ const PatientEntry = ({ navigation }) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.contentContainer}>
-        <Text style={styles.heading}>Patient Entry Form</Text>
         <View style={styles.formContainer}>
+          <Text style={styles.heading}>Patient Entry Form</Text>
           <View style={styles.formRow}>
             <TextInput
               style={styles.nameInput}
@@ -156,14 +156,24 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   heading: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 30,
     textAlign: "center",
   },
   formContainer: {
-    width: "80%",
-    paddingVertical: 10,
+    width: "90%",
+    padding: 20,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   formRow: {
     flexDirection: "row",
@@ -206,7 +216,7 @@ const styles = StyleSheet.create({
   },
 
   sectionHeading: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: "bold",
     marginBottom: 5,
   },
@@ -229,11 +239,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
-  },
-  checkboxPhoneNumberContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 15,
   },
 });
 

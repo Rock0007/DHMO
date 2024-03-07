@@ -12,6 +12,7 @@ import PatientLogs from "./src/Components/PatientLogs";
 import ViewAttendance from "./src/Components/ViewAttendance";
 import AddStaff from "./src/Components/AddStaff";
 import Logout from "./src/Auth/Logout";
+import EditProfile from "./src/Components/EditProfile";
 import {
   HomeIcon,
   UserPlusIcon,
@@ -44,7 +45,6 @@ const HomeDrawer = () => {
       <Drawer.Screen
         name="Patient Entry"
         component={PatientEntry}
-        screenOptions={{ headerShown: false }}
         options={{
           drawerIcon: ({ focused }) => (
             <UserPlusIcon
@@ -58,7 +58,6 @@ const HomeDrawer = () => {
       <Drawer.Screen
         name="Patient Logs"
         component={PatientLogs}
-        screenOptions={{ headerShown: false }}
         options={{
           drawerIcon: ({ focused }) => (
             <QueueListIcon
@@ -72,7 +71,6 @@ const HomeDrawer = () => {
       <Drawer.Screen
         name="Mark Attendance"
         component={MarkAttendance}
-        screenOptions={{ headerShown: false }}
         options={{
           drawerIcon: ({ focused }) => (
             <CheckCircleIcon
@@ -86,7 +84,6 @@ const HomeDrawer = () => {
       <Drawer.Screen
         name="View Attendance"
         component={ViewAttendance}
-        screenOptions={{ headerShown: false }}
         options={{
           drawerIcon: ({ focused }) => (
             <EyeIcon name="home" size={18} color={focused ? "blue" : "black"} />
@@ -96,7 +93,6 @@ const HomeDrawer = () => {
       <Drawer.Screen
         name="Add Staff"
         component={AddStaff}
-        screenOptions={{ headerShown: false }}
         options={{
           drawerIcon: ({ focused }) => (
             <PlusCircleIcon
@@ -110,7 +106,6 @@ const HomeDrawer = () => {
       <Drawer.Screen
         name="Logout"
         component={Logout}
-        screenOptions={{ headerShown: false }}
         options={{
           drawerIcon: ({ focused }) => (
             <ArrowLeftStartOnRectangleIcon
@@ -129,8 +124,26 @@ const App = () => {
   return (
     <UserProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login" headerMode="none">
+        <Stack.Navigator
+          initialRouteName="Login"
+          screenOptions={{ headerShown: false }}
+        >
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen
+            name="Edit Profile"
+            component={EditProfile}
+            options={{
+              headerShown: true,
+              title: "Edit Profile",
+              headerStyle: {
+                backgroundColor: "#008bff",
+              },
+              headerTintColor: "white",
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
+            }}
+          />
           <Stack.Screen name="HomeDrawer" component={HomeDrawer} />
         </Stack.Navigator>
       </NavigationContainer>

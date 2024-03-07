@@ -8,6 +8,8 @@ const {
   login,
   getProfile,
   logout,
+  editProfile,
+  checkExistingRecord,
 } = require("../controllers/authController");
 
 router.use(
@@ -22,5 +24,7 @@ router.post("/login", login);
 router.get("/profile", authenticateToken, getProfile);
 router.post("/signup", signup);
 router.delete("/logout", authenticateToken, logout);
+router.put("/staff/edit", authenticateToken, editProfile);
+router.get("/checkexistingrecord/:field/:value", checkExistingRecord);
 
 module.exports = router;
