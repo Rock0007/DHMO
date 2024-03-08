@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useUser } from "../Contexts/userContext";
-import { signup as authApiLogin } from "../Api/authAPI";
+import { signup as authApiLogin, checkExistingRecord } from "../Api/authAPI";
 
 const StaffRegistration = ({ navigation }) => {
   const { signup } = useUser();
@@ -92,7 +92,7 @@ const StaffRegistration = ({ navigation }) => {
       }
 
       const mobileNumberExists = await checkExistingRecord(
-        "mobileNumber",
+        "phoneNumber",
         phoneNumber
       );
       if (mobileNumberExists) {
@@ -111,6 +111,8 @@ const StaffRegistration = ({ navigation }) => {
         ToastAndroid.show("Gmail already exists", ToastAndroid.SHORT);
         return;
       }
+
+      // Continue with the registration process if all checks pass
 
       const formData = {
         fullName,
@@ -139,6 +141,35 @@ const StaffRegistration = ({ navigation }) => {
       navigation.navigate("Home");
     } catch (error) {
       console.error(error);
+
+      if (error.response) {
+        const status = error.response.status;
+        const data = error.response.data;
+
+        if (status === 400 && data && data.error === "Invalid field") {
+          ToastAndroid.show("Invalid field in the request", ToastAndroid.SHORT);
+        } else {
+          handleExistingRecordError(data);
+        }
+      } else {
+        ToastAndroid.show(
+          "Registration failed. Please check your network connection.",
+          ToastAndroid.SHORT
+        );
+      }
+    }
+  };
+
+  const handleExistingRecordError = (data) => {
+    if (data && data.exists) {
+      if (data.field === "phoneNumber") {
+        ToastAndroid.show("Mobile number already exists", ToastAndroid.SHORT);
+      } else if (data.field === "aadharID") {
+        ToastAndroid.show("Aadhar ID already exists", ToastAndroid.SHORT);
+      } else if (data.field === "gmail") {
+        ToastAndroid.show("Gmail already exists", ToastAndroid.SHORT);
+      }
+    } else {
       ToastAndroid.show(
         "Registration failed. Please try again.",
         ToastAndroid.SHORT
